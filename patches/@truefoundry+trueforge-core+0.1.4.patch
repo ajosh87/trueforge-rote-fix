@@ -1,0 +1,48 @@
+diff --git a/node_modules/@truefoundry/trueforge-core/dist/core/llm/VercelAILLM.js b/node_modules/@truefoundry/trueforge-core/dist/core/llm/VercelAILLM.js
+index 17c6568..9e73aec 100644
+--- a/node_modules/@truefoundry/trueforge-core/dist/core/llm/VercelAILLM.js
++++ b/node_modules/@truefoundry/trueforge-core/dist/core/llm/VercelAILLM.js
+@@ -422,7 +422,7 @@ function toAssistantModelMessage({
+     providerName,
+     logger
+   });
+-  if (Array.isArray(rawThinking) && provider !== "alibaba") {
++  if (Array.isArray(rawThinking) && (provider === "anthropic" || provider === "openai")) {
+     const blocks = rawThinking;
+     for (const tb of blocks) {
+       if (typeof tb === "object" && tb !== null && "type" in tb && "thinking" in tb && tb.type === "thinking" && typeof tb.thinking === "string") {
+diff --git a/node_modules/@truefoundry/trueforge-core/dist/core/llm/VercelAILLM.mjs b/node_modules/@truefoundry/trueforge-core/dist/core/llm/VercelAILLM.mjs
+index e7ac229..ef1baa2 100644
+--- a/node_modules/@truefoundry/trueforge-core/dist/core/llm/VercelAILLM.mjs
++++ b/node_modules/@truefoundry/trueforge-core/dist/core/llm/VercelAILLM.mjs
+@@ -379,7 +379,7 @@ function toAssistantModelMessage({
+     providerName,
+     logger
+   });
+-  if (Array.isArray(rawThinking) && provider !== "alibaba") {
++  if (Array.isArray(rawThinking) && (provider === "anthropic" || provider === "openai")) {
+     const blocks = rawThinking;
+     for (const tb of blocks) {
+       if (typeof tb === "object" && tb !== null && "type" in tb && "thinking" in tb && tb.type === "thinking" && typeof tb.thinking === "string") {
+diff --git a/node_modules/@truefoundry/trueforge-core/dist/core/llm/toOpenAIChatMessage.js b/node_modules/@truefoundry/trueforge-core/dist/core/llm/toOpenAIChatMessage.js
+index 2efd559..465a79c 100644
+--- a/node_modules/@truefoundry/trueforge-core/dist/core/llm/toOpenAIChatMessage.js
++++ b/node_modules/@truefoundry/trueforge-core/dist/core/llm/toOpenAIChatMessage.js
+@@ -35,12 +35,14 @@ function toOpenAIChatMessage(msg) {
+     };
+   }
+   if (!msg.tool_calls?.length) {
+-    const { tool_calls: _omit, ...rest } = msg;
+-    void _omit;
++    const { tool_calls: _omit, reasoning_content: _rc, thinking_blocks: _tb, source: _src, ...rest } = msg;
++    void _omit; void _rc; void _tb; void _src;
+     return rest;
+   }
++  const { reasoning_content: _rc, thinking_blocks: _tb, source: _src, ...msgRest } = msg;
++  void _rc; void _tb; void _src;
+   return {
+-    ...msg,
++    ...msgRest,
+     tool_calls: msg.tool_calls.map(({ tool_info: _toolInfo, ...rest }) => {
+       void _toolInfo;
+       return rest;

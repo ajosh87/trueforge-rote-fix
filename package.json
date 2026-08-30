@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "postinstall": "patch-package"
+    "postinstall": "patch-package && node -e \"const fs=require('fs'),path=require('path');const src=path.join(__dirname,'_frontend','deep-research-agent.html');const dest=path.join(__dirname,'node_modules','@truefoundry','trueforge','dist','_frontend','deep-research-agent.html');fs.copyFileSync(src,dest);console.log('Copied deep-research-agent.html to TrueForge _frontend');\""
   },
   "dependencies": {
     "@truefoundry/trueforge": "^0.1.4"

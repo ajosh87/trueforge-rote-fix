@@ -1,5 +1,11 @@
 {
+  "scripts": {
+    "postinstall": "patch-package"
+  },
   "dependencies": {
     "@truefoundry/trueforge": "^0.1.4"
+  },
+  "devDependencies": {
+    "patch-package": "^8.0.1"
   }
 }
